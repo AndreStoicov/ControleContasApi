@@ -14,7 +14,8 @@ namespace HubFintech.ControleContas.Api.Configuration
                     new SQLiteConnectionStringBuilder()
                     {
                         DataSource = "../banco.db",
-                        ForeignKeys = true
+                        ForeignKeys = true,
+                        DateTimeFormat = SQLiteDateFormats.UnixEpoch
                     }.ConnectionString
             }, true)
         {
@@ -24,8 +25,25 @@ namespace HubFintech.ControleContas.Api.Configuration
         {
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Conta>()
+                .HasKey(x => x.Id)
+                .HasRequired(s => s.Pessoa)
+                .WithMany(g => g.Contas)
+                .HasForeignKey(s => s.PessoaId);
+            
+            modelBuilder.Entity<Conta>()
+                .HasOptional(x => x.ContaPai)
+                .WithMany(x => x.ContasFilha);
+            
+            modelBuilder.Entity<Pessoa>()
+                .HasKey(x => x.Id)
+                .Map<PessoaFisica>(m => m.Requires("TipoPessoa").HasValue("PF"))
+                .Map<PessoaJuridica>(m => m.Requires("TipoPessoa").HasValue("PJ"));
+
         }
 
         public DbSet<Conta> Conta { get; set; }
+        public DbSet<Pessoa> Pessoa { get; set; }
     }
 }

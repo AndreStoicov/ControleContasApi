@@ -188,8 +188,10 @@
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\ContaController.cs" />
     <Compile Include="Domain\Conta.cs" />
+    <Compile Include="Domain\Pessoa.cs" />
     <Compile Include="Domain\Repositories\BaseRepository.cs" />
     <Compile Include="Domain\Repositories\Interfaces\IBaseRepository.cs" />
+    <Compile Include="Domain\TipoConta.cs" />
     <Compile Include="Domain\ViewModels\Erro.cs" />
     <Compile Include="Domain\ViewModels\Model.cs" />
     <Compile Include="Domain\ViewModels\ValidationFailedResult.cs" />

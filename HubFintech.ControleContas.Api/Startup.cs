@@ -61,7 +61,6 @@ namespace HubFintech.ControleContas.Api
             var container = new Container();
             container.Options.DefaultScopedLifestyle = new OwinRequestLifestyle();
 
-            container.Register<DbConfiguration, SqLiteConfiguration>(Lifestyle.Singleton);
             container.Register<DbContext, BaseContext>(Lifestyle.Scoped);
             container.Register(typeof(IBaseRepository<>), typeof(BaseRepository<>), Lifestyle.Scoped);
 
@@ -100,7 +99,6 @@ namespace HubFintech.ControleContas.Api
 
         private void ConfigureHttpFilters(HttpConfiguration httpConfiguration)
         {
-            httpConfiguration.Filters.Add(new AuthorizeAttribute());
             httpConfiguration.Filters.Add(new ValidateModelStateFilter());
         }
 

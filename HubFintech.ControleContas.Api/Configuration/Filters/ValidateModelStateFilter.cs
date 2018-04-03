@@ -29,7 +29,7 @@ namespace HubFintech.ControleContas.Api.Configuration.Filters
                     if (arg.Value == null)
                         continue;
 
-                    var validator = validationFactory?.GetValidator(arg.Value.GetType());
+                    var validator = validationFactory.GetValidator(arg.Value.GetType());
 
                     if (validator == null)
                         continue;

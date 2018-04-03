@@ -4,7 +4,7 @@ using SimpleInjector;
 
 namespace HubFintech.ControleContas.Api.Configuration.Factories
 {
-    public class FluentValidatorFactory: ValidatorFactoryBase
+    public class FluentValidatorFactory : ValidatorFactoryBase
     {
         private readonly Container container;
 
@@ -12,7 +12,7 @@ namespace HubFintech.ControleContas.Api.Configuration.Factories
         {
             this.container = container;
         }
-
+               
         public override IValidator CreateInstance(Type validatorType)
         {
             IServiceProvider provider = container;

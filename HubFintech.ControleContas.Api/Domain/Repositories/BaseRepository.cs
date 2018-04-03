@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using HubFintech.ControleContas.Api.Domain.Repositories.Interfaces;
@@ -54,7 +55,11 @@ namespace HubFintech.ControleContas.Api.Domain.Repositories
 
         public void Dispose()
         {
-            throw new NotImplementedException();
+            if (Context.Database.Connection.State == ConnectionState.Open)
+            {
+                Context.Database.CurrentTransaction.Dispose();
+                Context.Database.Connection.Close();
+            }
         }
     }
 }

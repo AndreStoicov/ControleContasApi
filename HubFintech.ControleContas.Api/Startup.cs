@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Web;
 using System.Web.Http;
 using System.Web.SessionState;
+using Fabrik.Common.WebAPI;
 using HubFintech.ControleContas.Api;
 using HubFintech.ControleContas.Api.Configuration;
 using HubFintech.ControleContas.Api.Configuration.Factories;
@@ -14,6 +15,7 @@ using HubFintech.ControleContas.Api.Configuration.Handlers;
 using HubFintech.ControleContas.Api.Configuration.Middlewares;
 using HubFintech.ControleContas.Api.Domain.Repositories;
 using HubFintech.ControleContas.Api.Domain.Repositories.Interfaces;
+using HubFintech.ControleContas.Api.Domain.ViewModels.Response.Hypermedia;
 using log4net.Config;
 using Microsoft.Owin;
 using Microsoft.Owin.Cors;
@@ -77,7 +79,7 @@ namespace HubFintech.ControleContas.Api
             ConfigureHttpFormatters(httpConfiguration);
             ConfigureHttpHandlers(httpConfiguration);
             ConfigureHttpFilters(httpConfiguration);
-
+            ConfigureEnricher(httpConfiguration);
             httpConfiguration.EnsureInitialized();
         }
 
@@ -115,6 +117,13 @@ namespace HubFintech.ControleContas.Api
             httpConfiguration.Formatters.JsonFormatter.SerializerSettings.ReferenceLoopHandling =
                 ReferenceLoopHandling.Ignore;
             httpConfiguration.Formatters.Remove(httpConfiguration.Formatters.XmlFormatter);
+        }
+
+        private void ConfigureEnricher(HttpConfiguration httpConfiguration)
+        {
+            httpConfiguration.AddResponseEnrichers(
+                new PessoaResponseEnricher()
+            );
         }
 
         private void ConfigureSwagger(HttpConfiguration httpConfiguration)

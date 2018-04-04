@@ -1,6 +1,7 @@
 ﻿using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Data.SQLite;
+using HubFintech.ControleContas.Api.Configuration.EntityMap;
 using HubFintech.ControleContas.Api.Domain;
 
 namespace HubFintech.ControleContas.Api.Configuration
@@ -26,24 +27,15 @@ namespace HubFintech.ControleContas.Api.Configuration
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<Conta>()
-                .HasKey(x => x.Id)
-                .HasRequired(s => s.Pessoa)
-                .WithMany(g => g.Contas)
-                .HasForeignKey(s => s.PessoaId);
-            
-            modelBuilder.Entity<Conta>()
-                .HasOptional(x => x.ContaPai)
-                .WithMany(x => x.ContasFilha);
-            
-            modelBuilder.Entity<Pessoa>()
-                .HasKey(x => x.Id)
-                .Map<PessoaFisica>(m => m.Requires("TipoPessoa").HasValue("PF"))
-                .Map<PessoaJuridica>(m => m.Requires("TipoPessoa").HasValue("PJ"));
-
+            modelBuilder.Configurations.Add(new ContaEntityMap());
+            modelBuilder.Configurations.Add(new PessoaEntityMap());
+            modelBuilder.Configurations.Add(new TransacaoEntityMap());
+            modelBuilder.Configurations.Add(new GestaoSaldoEntityMap());
         }
 
         public DbSet<Conta> Conta { get; set; }
         public DbSet<Pessoa> Pessoa { get; set; }
+        public DbSet<Transacao> Transacao { get; set; }
+        public DbSet<GestaoSaldo> GestaoSaldo { get; set; }
     }
 }

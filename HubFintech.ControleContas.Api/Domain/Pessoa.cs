@@ -10,12 +10,12 @@ namespace HubFintech.ControleContas.Api.Domain
     {
         private ICollection<Conta> _contas;
 
-        protected Pessoa()
+        public Pessoa()
         {
             _contas = new List<Conta>();
         }
 
-        public int Id { get; protected set; }
+        public int Id { get; set; }
         public virtual ICollection<Conta> Contas => _contas;
 
         public void AdicionarConta(Conta conta)
@@ -48,6 +48,10 @@ namespace HubFintech.ControleContas.Api.Domain
 
     public class PessoaFisica : Pessoa
     {
+        protected PessoaFisica()
+        {
+        }
+
         private PessoaFisica(string cpf, string nomeCompleto, DateTime dataNascimento)
         {
             Cpf = cpf;
@@ -74,6 +78,10 @@ namespace HubFintech.ControleContas.Api.Domain
 
     public class PessoaJuridica : Pessoa
     {
+        protected PessoaJuridica()
+        {
+        }
+
         public PessoaJuridica(string cnpj, string razaoSocial, string nomeFantasia)
         {
             Cnpj = cnpj;

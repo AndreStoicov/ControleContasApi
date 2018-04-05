@@ -6,7 +6,7 @@ namespace HubFintech.ControleContas.Api.Domain.Repositories.Interfaces
 {
     public interface IBaseRepository<T> where T : class
     {
-        void Add(T entity);
+        T Add(T entity);
         void Delete(T entity);
         void Delete(int id);
         void Update(T entity);

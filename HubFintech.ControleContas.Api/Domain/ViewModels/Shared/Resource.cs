@@ -3,7 +3,7 @@ using Fabrik.Common;
 using Fabrik.Common.WebAPI.Links;
 using Newtonsoft.Json;
 
-namespace HubFintech.ControleContas.Api.Domain.ViewModels.Response.Hypermedia
+namespace HubFintech.ControleContas.Api.Domain.ViewModels.Shared
 {
     public class Resource
     {

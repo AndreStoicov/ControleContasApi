@@ -1,31 +1,40 @@
 ﻿using System.Web.Http;
 using System.Web.Http.Description;
+using HubFintech.ControleContas.Api.Domain.Services.Interfaces;
+using HubFintech.ControleContas.Api.Domain.ViewModels.Request;
 
 namespace HubFintech.ControleContas.Api.Controllers
 {
     [RoutePrefix("v1/pessoas")]
     [ApiExplorerSettings(IgnoreApi = false)]
-    public class PessoaController: BaseController
+    public class PessoaController : ApiController
     {
-        [Route, HttpGet]
+        private readonly IPessoaService _pessoaService;
+
+        public PessoaController(IPessoaService pessoaService)
+        {
+            _pessoaService = pessoaService;
+        }
+
+        [Route(Name = "ObtemTodasPessoas"), HttpGet]
         public IHttpActionResult GetAll()
         {
-            var contas = _contaRepository.All();
-            return Ok(contas);
+            var pessoas = _pessoaService.ObtemTodas();
+            return Ok(pessoas);
         }
-        
-        [Route("{pessoaId}"), HttpGet]
-        public IHttpActionResult GetById()
+
+        [Route("{pessoaId}", Name = "ObtemPessoa"), HttpGet]
+        public IHttpActionResult GetById([FromUri] int pessoaId)
         {
-            var contas = _contaRepository.All();
-            return Ok(contas);
+            var pessoa = _pessoaService.ObtemPessoa(pessoaId);
+            return Ok(pessoa);
         }
-        
-        [Route, HttpPost]
-        public IHttpActionResult Post()
+
+        [Route(Name = "CriaPessoa"), HttpPost]
+        public IHttpActionResult Post([FromBody] PessoaRequest input)
         {
-            var contas = _contaRepository.All();
-            return Ok(contas);
+            var pessoa = _pessoaService.CriaPessoa(input);
+            return Ok(pessoa);
         }
     }
 }

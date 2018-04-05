@@ -9,8 +9,8 @@ namespace HubFintech.ControleContas.Api.Domain.Repositories
 {
     public class BaseRepository<T> : IBaseRepository<T>, IDisposable where T : class
     {
-        private DbContext Context { get; set; }
-        private DbSet<T> DbSet { get; set; }
+        public DbContext Context { get; set; }
+        public DbSet<T> DbSet { get; set; }
 
         public BaseRepository(DbContext dbContext)
         {
@@ -18,9 +18,11 @@ namespace HubFintech.ControleContas.Api.Domain.Repositories
             DbSet = Context.Set<T>();
         }
 
-        public void Add(T entity)
+        public T Add(T entity)
         {
-            throw new NotImplementedException();
+            DbSet.Add(entity);
+            Context.SaveChanges();
+            return entity;
         }
 
         public void Delete(T entity)
@@ -38,9 +40,9 @@ namespace HubFintech.ControleContas.Api.Domain.Repositories
             throw new NotImplementedException();
         }
 
-        public T GetById(int Id)
+        public T GetById(int id)
         {
-            throw new NotImplementedException();
+            return DbSet.Find(id);
         }
 
         public IEnumerable<T> All()
@@ -50,7 +52,7 @@ namespace HubFintech.ControleContas.Api.Domain.Repositories
 
         public IEnumerable<T> Find(Func<T, bool> predicate)
         {
-            throw new NotImplementedException();
+            return DbSet.Where(predicate);
         }
 
         public void Dispose()

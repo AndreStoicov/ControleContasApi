@@ -47,6 +47,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Dynamitey, Version=2.0.9.136, Culture=neutral, PublicKeyToken=cbf53ea3aeb972c6">
+      <HintPath>..\packages\Dynamitey.2.0.9.136\lib\net40\Dynamitey.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
@@ -193,10 +196,9 @@
     <Compile Include="Configuration\Factories\LogFactory.cs" />
     <Compile Include="Configuration\Filters\ValidateModelStateFilter.cs" />
     <Compile Include="Configuration\GlobalContainerAccessor.cs" />
-    <Compile Include="Configuration\Handlers\EnrichingHandler.cs" />
     <Compile Include="Configuration\Handlers\PayloadLoggingHandler.cs" />
+    <Compile Include="Configuration\Handlers\WrappingHandler.cs" />
     <Compile Include="Configuration\Middlewares\HttpHeaderMiddleware.cs" />
-    <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\ContaController.cs" />
     <Compile Include="Controllers\PessoaController.cs" />
     <Compile Include="Domain\Conta.cs" />
@@ -206,19 +208,25 @@
     <Compile Include="Domain\Pessoa.cs" />
     <Compile Include="Domain\Repositories\BaseRepository.cs" />
     <Compile Include="Domain\Repositories\Interfaces\IBaseRepository.cs" />
+    <Compile Include="Domain\Services\ContaService.cs" />
+    <Compile Include="Domain\Services\Interfaces\IContaService.cs" />
     <Compile Include="Domain\Services\Interfaces\IPessoaService.cs" />
     <Compile Include="Domain\Services\PessoaService.cs" />
     <Compile Include="Domain\TipoConta.cs" />
     <Compile Include="Domain\TipoTransacao.cs" />
     <Compile Include="Domain\Transacao.cs" />
-    <Compile Include="Domain\ViewModels\Erro.cs" />
-    <Compile Include="Domain\ViewModels\Model.cs" />
-    <Compile Include="Domain\ViewModels\Response\Hypermedia\PessoaResponseEnricher.cs" />
-    <Compile Include="Domain\ViewModels\Response\Hypermedia\Resource.cs" />
-    <Compile Include="Domain\ViewModels\Response\PessoaFisicaResponse.cs" />
-    <Compile Include="Domain\ViewModels\Response\PessoaJuridicaResponse.cs" />
+    <Compile Include="Domain\Validators\PessoaRequestValidator.cs" />
+    <Compile Include="Domain\ViewModels\Request\PessoaRequest.cs" />
+    <Compile Include="Domain\ViewModels\Response\ContaResponse.cs" />
+    <Compile Include="Domain\ViewModels\Response\Hypermedia\ObtemContaEnricher.cs" />
+    <Compile Include="Domain\ViewModels\Response\Hypermedia\ObtemTodasContasEnricher.cs" />
+    <Compile Include="Domain\ViewModels\Response\Hypermedia\ObtemTodasPessoasEnricher.cs" />
+    <Compile Include="Domain\ViewModels\Response\Hypermedia\ObtemPessoaEnricher.cs" />
     <Compile Include="Domain\ViewModels\Response\PessoaResponse.cs" />
-    <Compile Include="Domain\ViewModels\ValidationFailedResult.cs" />
+    <Compile Include="Domain\ViewModels\Shared\ApiResponse.cs" />
+    <Compile Include="Domain\ViewModels\Shared\PessoaFisicaViewModel.cs" />
+    <Compile Include="Domain\ViewModels\Shared\PessoaJuridicaViewModel.cs" />
+    <Compile Include="Domain\ViewModels\Shared\Resource.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>

@@ -11,18 +11,18 @@ namespace HubFintech.ControleContas.Api.Configuration
     
     public class GlobalContainerAccessor : IGlobalContainerAccessor
     {
-        private readonly Container container;
+        private readonly Container _container;
 
         public GlobalContainerAccessor(Container container)
         {
-            this.container = container;
+            _container = container;
         }
 
-        public Container Container => container;
+        public Container Container => _container;
 
         public object GetInstance(Type t)
         {
-            return container.GetInstance(t);
+            return _container.GetInstance(t);
         }
     }
 }

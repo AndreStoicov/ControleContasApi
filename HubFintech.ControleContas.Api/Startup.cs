@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Data.Entity;
-using System.Data.SQLite;
 using System.IO;
 using System.Reflection;
 using System.Web;
 using System.Web.Http;
 using System.Web.SessionState;
 using Fabrik.Common.WebAPI;
-using HubFintech.ControleContas.Api;
+using FluentValidation;
+using FluentValidation.WebApi;
 using HubFintech.ControleContas.Api.Configuration;
 using HubFintech.ControleContas.Api.Configuration.Factories;
 using HubFintech.ControleContas.Api.Configuration.Filters;
@@ -15,6 +15,9 @@ using HubFintech.ControleContas.Api.Configuration.Handlers;
 using HubFintech.ControleContas.Api.Configuration.Middlewares;
 using HubFintech.ControleContas.Api.Domain.Repositories;
 using HubFintech.ControleContas.Api.Domain.Repositories.Interfaces;
+using HubFintech.ControleContas.Api.Domain.Services;
+using HubFintech.ControleContas.Api.Domain.Services.Interfaces;
+using HubFintech.ControleContas.Api.Domain.Validators;
 using HubFintech.ControleContas.Api.Domain.ViewModels.Response.Hypermedia;
 using log4net.Config;
 using Microsoft.Owin;
@@ -48,6 +51,9 @@ namespace HubFintech.ControleContas.Api
 
             container.Verify();
 
+            FluentValidationModelValidatorProvider.Configure(httpConfiguration,
+                provider => { provider.ValidatorFactory = new FluentValidatorFactory(container); });
+
             GlobalConfiguration.Configuration.DependencyResolver =
                 new SimpleInjectorWebApiDependencyResolver(container);
             httpConfiguration.DependencyResolver = new SimpleInjectorWebApiDependencyResolver(container);
@@ -65,10 +71,22 @@ namespace HubFintech.ControleContas.Api
 
             container.Register<DbContext, BaseContext>(Lifestyle.Scoped);
             container.Register(typeof(IBaseRepository<>), typeof(BaseRepository<>), Lifestyle.Scoped);
-
+            container.Register<IPessoaService, PessoaService>(Lifestyle.Transient);
+            container.Register<IContaService, ContaService>(Lifestyle.Transient);
             container.Register<ILogFactory, LogFactory>(Lifestyle.Scoped);
+            container.RegisterInstance<IGlobalContainerAccessor>(new GlobalContainerAccessor(container));
+            RegisterValidators(container);
 
             return container;
+        }
+
+        private void RegisterValidators(Container container)
+        {
+            AssemblyScanner.FindValidatorsInAssemblyContaining<PessoaRequestValidator>()
+                .ForEach(result =>
+                {
+                    container.Register(result.InterfaceType, result.ValidatorType, Lifestyle.Singleton);
+                });
         }
 
         private void ConfigureHttpConfiguration(HttpConfiguration httpConfiguration)
@@ -97,6 +115,8 @@ namespace HubFintech.ControleContas.Api
         private void ConfigureHttpHandlers(HttpConfiguration httpConfiguration)
         {
             httpConfiguration.MessageHandlers.Add(new PayloadLoggingHandler());
+            httpConfiguration.MessageHandlers.Add(new WrappingHandler());
+            httpConfiguration.MessageHandlers.Add(new EnrichingHandler());
         }
 
         private void ConfigureHttpFilters(HttpConfiguration httpConfiguration)
@@ -122,9 +142,11 @@ namespace HubFintech.ControleContas.Api
         private void ConfigureEnricher(HttpConfiguration httpConfiguration)
         {
             httpConfiguration.AddResponseEnrichers(
-                new PessoaResponseEnricher()
+                new ObtemPessoaEnricher(),
+                new ObtemTodasPessoasEnricher()
             );
         }
+
 
         private void ConfigureSwagger(HttpConfiguration httpConfiguration)
         {

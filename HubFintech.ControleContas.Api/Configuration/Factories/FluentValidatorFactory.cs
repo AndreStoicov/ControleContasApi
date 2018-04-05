@@ -6,16 +6,16 @@ namespace HubFintech.ControleContas.Api.Configuration.Factories
 {
     public class FluentValidatorFactory : ValidatorFactoryBase
     {
-        private readonly Container container;
+        private readonly Container _container;
 
         public FluentValidatorFactory(Container container)
         {
-            this.container = container;
+            _container = container;
         }
                
         public override IValidator CreateInstance(Type validatorType)
         {
-            IServiceProvider provider = container;
+            IServiceProvider provider = _container;
             object instance = provider.GetService(validatorType);
             return instance as IValidator;
         }

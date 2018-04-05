@@ -15,7 +15,7 @@ namespace HubFintech.ControleContas.Api.Configuration.Factories
 
         public LogFactory()
         {
-            log4net.GlobalContext.Properties["HOSTNAME"] = Environment.MachineName;
+            GlobalContext.Properties["HOSTNAME"] = Environment.MachineName;
         }
 
         public string CorrelationId()

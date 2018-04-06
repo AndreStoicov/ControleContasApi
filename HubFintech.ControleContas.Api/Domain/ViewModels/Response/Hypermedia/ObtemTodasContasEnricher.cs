@@ -17,6 +17,19 @@ namespace HubFintech.ControleContas.Api.Domain.ViewModels.Response.Hypermedia
                 x.AddLink(new RelatedLink(Request.GetUrlHelper()
                     .Link("ObtemPessoa", new {pessoaId = x.PessoaId}), "Obtem Pessoa Por Id"));
 
+                x.AddLink(new Link("add-conta-filha", Request.GetUrlHelper()
+                        .Link("CriaContaFilha", new {pessoaId = x.PessoaId, contaId = x.Id}),
+                    "Cria uma Conta Filha vinculada a essa Conta"));
+
+                x.AddLink(new CollectionLink(Request.GetUrlHelper()
+                    .Link("ObtemTodasTransacoes", new {contaId = x.Id}), "Obtem Todas as Transações dessa Conta"));
+
+                if (x.ContaPaiId != default(int))
+                {
+                    x.AddLink(new RelatedLink(Request.GetUrlHelper()
+                        .Link("ObtemConta", new {pessoaId = x.PessoaId, contaId = x.ContaPaiId}), "Obtem Conta Pai"));
+                }
+
                 if (x.ContemContasFilha)
                 {
                     x.AddLink(new CollectionLink(Request.GetUrlHelper()
@@ -31,8 +44,7 @@ namespace HubFintech.ControleContas.Api.Domain.ViewModels.Response.Hypermedia
                 if (x.TipoConta == "Matriz")
                 {
                     x.AddLink(new Link("add-Aporte", Request.GetUrlHelper()
-                            .Link("CriaAporte", new {contaId = x.Id}),
-                        "Cria uma Novo Aporte com essa Conta como Destino"));
+                        .Link("CriaAporte", new {contaId = x.Id}), "Cria uma Novo Aporte com essa Conta como Destino"));
                 }
             });
         }

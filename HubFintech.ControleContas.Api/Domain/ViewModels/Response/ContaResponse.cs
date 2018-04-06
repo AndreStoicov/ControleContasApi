@@ -23,6 +23,9 @@ namespace HubFintech.ControleContas.Api.Domain.ViewModels.Response
             Cancelada = conta.Cancelada;
             ContaPaiId = conta.ContaPaiId.GetValueOrDefault();
             ContemContasFilha = conta.ContasFilha.Any();
+
+            var saldo = conta.GestaoSaldos.FirstOrDefault(x => x.SaldoCorrente);
+            Saldo = saldo?.Saldo ?? 0;
         }
         
         public int Id { get; set; }
@@ -35,6 +38,7 @@ namespace HubFintech.ControleContas.Api.Domain.ViewModels.Response
         public DateTime DataCriacao { get; set; }
         public bool Ativo { get; set; }
         public bool Cancelada { get; set; }
+        public decimal Saldo { get; set; }
         
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         public int ContaPaiId { get; set; }

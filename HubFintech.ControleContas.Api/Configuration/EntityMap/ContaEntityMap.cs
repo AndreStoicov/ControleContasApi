@@ -25,6 +25,11 @@ namespace HubFintech.ControleContas.Api.Configuration.EntityMap
             HasMany(x => x.TransacoesCredito)
                 .WithOptional(x => x.ContaOrigem)
                 .HasForeignKey(x => x.ContaOrigemId);
+
+            HasMany(x => x.GestaoSaldos)
+                .WithRequired(x => x.Conta)
+                .HasForeignKey(x => x.ContaId);
+
         }
     }
 }

@@ -38,13 +38,15 @@ namespace HubFintech.ControleContas.Api.Configuration.Handlers
                     mensagens = new List<Mensagem>();
                     content = null;
 
-                    if (error.ModelState.Count > 0)
+                    if (error.ModelState != null && error.ModelState.Count > 0)
+                    {
                         response.StatusCode = (HttpStatusCode) 422;
 
-                    foreach (var errorKey in error.ModelState.Keys)
-                    {
-                        var erro = error.ModelState[errorKey] as string[];
-                        erro.ForEach(x => mensagens.Add(new Mensagem(x)));
+                        foreach (var errorKey in error.ModelState.Keys)
+                        {
+                            var erro = error.ModelState[errorKey] as string[];
+                            erro.ForEach(x => mensagens.Add(new Mensagem(x)));
+                        }
                     }
 
                     if (response.StatusCode == HttpStatusCode.InternalServerError)

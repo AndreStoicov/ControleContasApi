@@ -1,10 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Linq;
+using Fabrik.Common;
 
 namespace HubFintech.ControleContas.Api.Domain
 {
     public class Transacao
     {
+        public Transacao()
+        {
+            
+        }
+        
         public Transacao(TipoTransacao tipoTransacao, Conta contaDestino, decimal valor)
         {
             TipoTransacao = tipoTransacao;
@@ -15,11 +21,34 @@ namespace HubFintech.ControleContas.Api.Domain
             DataCriacao = DateTime.Now;
         }
 
-        public static Transacao ExtornaTransacao(Transacao transacao)
+        public static Transacao CriaAporte(Conta conta, decimal valor)
         {
-            if(transacao.TipoTransacao == TipoTransacao.Aporte)
+            Ensure.Argument.NotNull(conta, nameof(conta));
+            Ensure.Argument.IsNot(valor <= 0, nameof(valor));
+
+            var transacao = new Transacao(TipoTransacao.Aporte, conta, valor)
+            {
+                CodigoAporte = RandomString()
+            };
+
+            return transacao;
         }
-        
+
+        public static Transacao CriaTransferencia(Conta contaOrigem, Conta contaDestino, decimal valor)
+        {
+            Ensure.Argument.NotNull(contaOrigem, nameof(contaOrigem));
+            Ensure.Argument.NotNull(contaDestino, nameof(contaDestino));
+            Ensure.Argument.IsNot(valor <= 0, nameof(valor));
+
+            var transacao = new Transacao(TipoTransacao.Transferencia, contaDestino, valor)
+            {
+                ContaOrigem = contaOrigem,
+                ContaOrigemId = contaOrigem.Id
+            };
+
+            return transacao;
+        }
+
         public int Id { get; set; }
         public TipoTransacao TipoTransacao { get; set; }
 
@@ -34,7 +63,14 @@ namespace HubFintech.ControleContas.Api.Domain
         public bool Extornado { get; set; }
         public DateTime DataCriacao { get; set; }
         public DateTime? DataExtorno { get; set; }
-        
-        public virtual List<GestaoSaldo> GestaoSaldo { get; set; }
+
+        private static readonly Random Random = new Random();
+
+        private static string RandomString()
+        {
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            return new string(Enumerable.Repeat(chars, 8)
+                .Select(s => s[Random.Next(s.Length)]).ToArray());
+        }
     }
 }

@@ -73,6 +73,7 @@ namespace HubFintech.ControleContas.Api
             container.Register(typeof(IBaseRepository<>), typeof(BaseRepository<>), Lifestyle.Scoped);
             container.Register<IPessoaService, PessoaService>(Lifestyle.Transient);
             container.Register<IContaService, ContaService>(Lifestyle.Transient);
+            container.Register<ITransacaoService, TransacaoService>(Lifestyle.Transient);
             container.Register<ILogFactory, LogFactory>(Lifestyle.Scoped);
             container.RegisterInstance<IGlobalContainerAccessor>(new GlobalContainerAccessor(container));
             RegisterValidators(container);
@@ -142,8 +143,12 @@ namespace HubFintech.ControleContas.Api
         private void ConfigureEnricher(HttpConfiguration httpConfiguration)
         {
             httpConfiguration.AddResponseEnrichers(
+                new ObtemContaEnricher(),
                 new ObtemPessoaEnricher(),
-                new ObtemTodasPessoasEnricher()
+                new ObtemTodasContasEnricher(),
+                new ObtemTodasPessoasEnricher(),
+                new ObtemTodasTransacoesEnricher(),
+                new ObtemTransacaoEnricher()
             );
         }
 

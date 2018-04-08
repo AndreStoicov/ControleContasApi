@@ -14,7 +14,7 @@ namespace HubFintech.ControleContas.Api.Domain
             GestaoSaldos = new List<GestaoSaldo>();
         }
 
-        private Conta(string nome, TipoConta tipoConta, Pessoa pessoa)
+        private Conta(string nome, TipoConta tipoConta, Pessoa pessoa) : this()
         {
             Nome = nome;
             TipoConta = tipoConta;

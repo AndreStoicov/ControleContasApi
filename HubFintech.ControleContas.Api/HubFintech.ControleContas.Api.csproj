@@ -221,10 +221,15 @@
     <Compile Include="Domain\Validators\ContaFilhaRequestValidator.cs" />
     <Compile Include="Domain\Validators\ContaRequestValidator.cs" />
     <Compile Include="Domain\Validators\PessoaRequestValidator.cs" />
+    <Compile Include="Domain\Validators\TransacaoAporteRequestValidator.cs" />
+    <Compile Include="Domain\Validators\TransacaoExtornoRequestValidator.cs" />
+    <Compile Include="Domain\Validators\TransacaoTransferenciaRequestValidator.cs" />
     <Compile Include="Domain\ViewModels\Request\ContaFilhaRequest.cs" />
     <Compile Include="Domain\ViewModels\Request\ContaRequest.cs" />
     <Compile Include="Domain\ViewModels\Request\PessoaRequest.cs" />
+    <Compile Include="Domain\ViewModels\Request\TransacaoAporteRequest.cs" />
     <Compile Include="Domain\ViewModels\Request\TransacaoExtornoRequest.cs" />
+    <Compile Include="Domain\ViewModels\Request\TransacaoTransferenciaRequest.cs" />
     <Compile Include="Domain\ViewModels\Response\ContaResponse.cs" />
     <Compile Include="Domain\ViewModels\Response\Hypermedia\ObtemContaEnricher.cs" />
     <Compile Include="Domain\ViewModels\Response\Hypermedia\ObtemTodasContasEnricher.cs" />

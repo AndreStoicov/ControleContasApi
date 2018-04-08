@@ -1,4 +1,5 @@
 ﻿using System;
+using Fabrik.Common;
 
 namespace HubFintech.ControleContas.Api.Domain
 {
@@ -11,13 +12,15 @@ namespace HubFintech.ControleContas.Api.Domain
             Transacao = transacao;
             TransacaoId = transacao.Id;
             DataCriacao = DateTime.Now;
+            SaldoCorrente = true;
         }
 
         public static GestaoSaldo Criar(Conta conta, Transacao transacao)
         {
-            var gestao = new GestaoSaldo(conta, transacao);
-            gestao.SaldoCorrente = true;
-            
+            Ensure.Argument.NotNull(conta, nameof(conta));
+            Ensure.Argument.NotNull(transacao, nameof(transacao));
+
+            return new GestaoSaldo(conta, transacao);
         }
 
         public int Id { get; set; }

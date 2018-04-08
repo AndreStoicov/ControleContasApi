@@ -46,7 +46,7 @@ namespace HubFintech.ControleContas.Api.Controllers
             return Ok(conta);
         }
 
-        [Route("{contaId/filhas}", Name = "CriaContaFilha"), HttpPost]
+        [Route("{contaId}/filhas", Name = "CriaContaFilha"), HttpPost]
         public IHttpActionResult PostCriaContaFilha([FromUri] int pessoaId, [FromBody] ContaFilhaRequest input)
         {
             var conta = _contaService.CriaContaFilha(input);

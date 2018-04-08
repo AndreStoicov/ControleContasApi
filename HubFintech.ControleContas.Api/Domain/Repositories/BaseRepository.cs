@@ -37,7 +37,8 @@ namespace HubFintech.ControleContas.Api.Domain.Repositories
 
         public void Update(T entity)
         {
-            throw new NotImplementedException();
+            Context.Entry(entity).State = EntityState.Modified;
+            Context.SaveChanges();
         }
 
         public T GetById(int id)

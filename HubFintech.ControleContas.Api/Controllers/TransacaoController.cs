@@ -22,11 +22,25 @@ namespace HubFintech.ControleContas.Api.Controllers
             var pessoas = _transacaoService.ObtemTransacao(transacaoId);
             return Ok(pessoas);
         }
-        
-        [Route("{transacaoId/extornar}", Name = "ObtemTransacao"), HttpGet]
-        public IHttpActionResult GetAll([FromUri] int transacaoId, [FromBody] TransacaoExtornoRequest input)
+
+        [Route("{transacaoId}/extornar", Name = "ExtornaTransacao"), HttpPost]
+        public IHttpActionResult PostExtorna([FromUri] int transacaoId, [FromBody] TransacaoExtornoRequest input)
         {
-            var pessoas = _transacaoService.ObtemTransacao(transacaoId);
+            var pessoas = _transacaoService.ExtornaTransacao(input);
+            return Ok(pessoas);
+        }
+
+        [Route("aporte", Name = "CriaAporte"), HttpPost]
+        public IHttpActionResult PostExtorna([FromBody] TransacaoAporteRequest input)
+        {
+            var pessoas = _transacaoService.CriaAporte(input);
+            return Ok(pessoas);
+        }
+
+        [Route("transferencia", Name = "CriaTrasferencia"), HttpPost]
+        public IHttpActionResult PostExtorna([FromBody] TransacaoTransferenciaRequest input)
+        {
+            var pessoas = _transacaoService.CriaTransferencia(input);
             return Ok(pessoas);
         }
     }

@@ -23,7 +23,7 @@ namespace HubFintech.ControleContas.Api.Domain.Validators
                 _globalContainerAccessor.GetInstance(typeof(IBaseRepository<Pessoa>)) as IBaseRepository<Pessoa>;
             var pessoa = _pessoaRepository.GetById(pessoaId);
 
-            return pessoa == null;
+            return pessoa != null;
         }
     }
 }

@@ -3,7 +3,6 @@
     public enum TipoTransacao
     {
         Aporte = 1,
-        Transferencia = 2,
-        Extorno = 3
+        Transferencia = 2
     }
 }

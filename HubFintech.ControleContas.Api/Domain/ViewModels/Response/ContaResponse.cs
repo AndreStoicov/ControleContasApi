@@ -23,9 +23,6 @@ namespace HubFintech.ControleContas.Api.Domain.ViewModels.Response
             Cancelada = conta.Cancelada;
             ContaPaiId = conta.ContaPaiId.GetValueOrDefault();
             ContemContasFilha = conta.ContasFilha.Any();
-
-            var saldo = conta.GestaoSaldos.FirstOrDefault(x => x.SaldoCorrente);
-            Saldo = saldo?.Saldo ?? 0;
         }
         
         public int Id { get; set; }

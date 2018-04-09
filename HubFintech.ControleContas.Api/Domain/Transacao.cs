@@ -8,10 +8,9 @@ namespace HubFintech.ControleContas.Api.Domain
     {
         public Transacao()
         {
-            
         }
-        
-        public Transacao(TipoTransacao tipoTransacao, Conta contaDestino, decimal valor)
+
+        private Transacao(TipoTransacao tipoTransacao, Conta contaDestino, decimal valor)
         {
             TipoTransacao = tipoTransacao;
             ContaDestino = contaDestino;

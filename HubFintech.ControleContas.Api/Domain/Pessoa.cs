@@ -8,42 +8,13 @@ namespace HubFintech.ControleContas.Api.Domain
 {
     public abstract class Pessoa
     {
-        private ICollection<Conta> _contas;
-
         public Pessoa()
         {
-            _contas = new List<Conta>();
+            Contas = new List<Conta>();
         }
 
         public int Id { get; set; }
-        public virtual ICollection<Conta> Contas => _contas;
-
-        public void AdicionarConta(Conta conta)
-        {
-            Ensure.Argument.NotNull(conta, nameof(conta));
-
-            if (_contas == null)
-                _contas = new List<Conta>();
-
-            if (_contas.Any(x => x.Id == conta.Id))
-                RemoverConta(conta);
-
-            _contas.Add(conta);
-        }
-
-        public void RemoverConta(Conta conta)
-        {
-            Ensure.Argument.NotNull(conta, nameof(conta));
-
-            if (_contas == null)
-                _contas = new List<Conta>();
-
-            var contaAntigo = _contas.FirstOrDefault(x => x.Id == conta.Id);
-
-            Ensure.Argument.NotNull(contaAntigo, nameof(contaAntigo));
-
-            _contas.Remove(contaAntigo);
-        }
+        public virtual ICollection<Conta> Contas { get; }
     }
 
     public class PessoaFisica : Pessoa
@@ -71,9 +42,9 @@ namespace HubFintech.ControleContas.Api.Domain
             return new PessoaFisica(cpf, nomeCompleto, dataNascimento);
         }
 
-        public string Cpf { get; protected set; }
-        public string NomeCompleto { get; protected set; }
-        public DateTime DataNascimento { get; protected set; }
+        public string Cpf { get; private set; }
+        public string NomeCompleto { get; private set; }
+        public DateTime DataNascimento { get; private set; }
     }
 
     public class PessoaJuridica : Pessoa
@@ -82,7 +53,7 @@ namespace HubFintech.ControleContas.Api.Domain
         {
         }
 
-        public PessoaJuridica(string cnpj, string razaoSocial, string nomeFantasia)
+        private PessoaJuridica(string cnpj, string razaoSocial, string nomeFantasia)
         {
             Cnpj = cnpj;
             RazaoSocial = razaoSocial;
@@ -100,8 +71,8 @@ namespace HubFintech.ControleContas.Api.Domain
             return new PessoaJuridica(cnpj, razaoSocial, nomeFantasia);
         }
 
-        public string Cnpj { get; protected set; }
-        public string RazaoSocial { get; protected set; }
-        public string NomeFantasia { get; protected set; }
+        public string Cnpj { get; private set; }
+        public string RazaoSocial { get; private set; }
+        public string NomeFantasia { get; private set; }
     }
 }
